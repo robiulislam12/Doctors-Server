@@ -1,7 +1,7 @@
 import MenuIcon from '@mui/icons-material/Menu';
 import { AppBar, Box, Button, IconButton, Toolbar, Typography } from '@mui/material';
 import React from 'react';
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 
 export default function Navigation() {
@@ -25,7 +25,9 @@ export default function Navigation() {
             <Typography onClick={handleClick} style={{cursor:'pointer'}} variant="h6" component="div" sx={{ flexGrow: 1 }}>
               Doctors Portal
             </Typography>
-            <Button color="inherit">Login</Button>
+            <Link to='/login'>
+              <Button color="inherit">Login</Button>
+            </Link>
           </Toolbar>
         </AppBar>
       </Box>
