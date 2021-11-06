@@ -24,7 +24,25 @@ async function run(){
 
   try{
       await client.connect();
-      console.log('connect successfully')
+
+      const database = client.db('doctors_portal');
+      const appointmentCollection = database.collections('appointment');
+
+      //POST api 
+      app.post('/appointment', async (req, res) =>{
+
+        const consumer = {
+          name: 'Robiul Islam',
+          phoneNumber: '01889314452',
+          email: 'robi@gmail.com'
+        }
+
+        const result = await appointmentCollection.insertOne(consumer);
+
+        console.log(result);
+
+      })
+      
   }
   finally{
     // await client.close()
