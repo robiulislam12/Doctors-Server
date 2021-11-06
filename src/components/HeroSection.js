@@ -7,7 +7,7 @@ import heroImg from '../assets/images/chair.png';
 
 export default function HeroSection() {
     return (
-    <Box sx={{ flexGrow: 1 }} my={10}>
+    <Box sx={{ flexGrow: 1 }} my={15}>
         <Container>
             <Grid container spacing={2} >
                 <Grid item xs={12} md={6}>

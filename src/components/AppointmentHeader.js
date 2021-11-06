@@ -5,7 +5,7 @@ import Calender from './Calender';
 
 export default function AppointmentHeader({date, setDate}) {
     return (
-        <Box sx={{my: 10,}}>
+        <Box sx={{my: 15}}>
             <Container>
                <Grid container spacing={2}>
                     <Grid item xs={12} md={6}>
