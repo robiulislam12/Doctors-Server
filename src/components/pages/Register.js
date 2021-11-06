@@ -1,4 +1,4 @@
-import { Box, Button, Container, Grid, TextField, Typography } from "@mui/material";
+import { Box, Button, Container, Grid, TextField, Typography,CircularProgress } from "@mui/material";
 import { useState } from "react";
 import { NavLink, useHistory } from 'react-router-dom';
 import loginImg from "../../assets/images/login.png";
@@ -7,7 +7,7 @@ import useAuth from "../../hooks/useAuth";
 export default function Register() {
     const [registerData, setRegisterData] = useState({});
 
-    const {registerUser } = useAuth()
+    const {registerUser, setIsLoading,isLoading } = useAuth()
 
     //Router History
   const history = useHistory();
@@ -39,6 +39,9 @@ export default function Register() {
         .then(user => {
           history.push('/')
         })
+        .finally(() =>{
+          setIsLoading(false)
+        })
 
 
         e.preventDefault()
@@ -52,7 +55,8 @@ export default function Register() {
             <Typography variant="h5" align='center' color="" component="h5">
               Register
             </Typography>
-            <form onSubmit={handleSubmit} mt={2}>
+            {
+            !isLoading && <form onSubmit={handleSubmit} mt={2}>
             <TextField
               type='text'
                 id="standard-basic"
@@ -98,7 +102,11 @@ export default function Register() {
               <NavLink to='/login'  >
                 <Button sx={{mt: 2}} variant='text'>Already Have A Account? Login</Button>
               </NavLink>
-            </form>
+            </form>}
+            {
+              isLoading && <CircularProgress color="success" />
+
+            }
           </Grid>
           <Grid item xs={12} md={6}>
             <img style={{ width: "100%" }} src={loginImg} alt="login" />

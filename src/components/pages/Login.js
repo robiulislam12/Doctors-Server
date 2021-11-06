@@ -4,26 +4,29 @@ import {
   Container,
   Grid,
   TextField,
-  Typography,
+  Typography
 } from "@mui/material";
 import { useState } from "react";
-import { NavLink, useHistory } from "react-router-dom";
+import { NavLink, useHistory, useLocation } from "react-router-dom";
 import loginImg from "../../assets/images/login.png";
 import useAuth from "../../hooks/useAuth";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { signInWithGoogle, setError, logIn } = useAuth();
+  const { signInWithGoogle, setError, logIn , setIsLoading} = useAuth();
 
   //Router History
   const history = useHistory();
+  const location = useLocation()
+
+  const redirect_Uri = location.state?.from || '/';
 
   //Google Logon
   const handleRedirect = () => {
     signInWithGoogle()
       .then((result) => {
-        history.push("/");
+        history.push(redirect_Uri);
       })
       .catch((error) => setError(error.message));
   };
@@ -35,7 +38,9 @@ export default function Login() {
         console.log(userCredential.user);
         history.push("/");
       })
-      .catch((error) => setError(error.message));
+      .catch((error) => setError(error.message)).finally(()=>{
+        // setIsLoading(true)
+      })
 
     e.preventDefault();
   };

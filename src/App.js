@@ -3,6 +3,7 @@ import Appointment from "./components/pages/Appointment";
 import Home from "./components/pages/Home";
 import Login from "./components/pages/Login";
 import Register from "./components/pages/Register";
+import PrivateRoute from "./components/PrivateRoute";
 import AuthProvider from "./contexts/AuthProvider";
 
 export default function App() {
@@ -12,7 +13,9 @@ export default function App() {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/home" component={Home} />
-          <Route path="/appointment" component={Appointment} />
+          <PrivateRoute path="/appointment">
+            <Appointment/>
+          </PrivateRoute>
           <Route path="/login">
             <Login />
           </Route>
