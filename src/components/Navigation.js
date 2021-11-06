@@ -2,13 +2,13 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { AppBar, Box, Button, IconButton, Toolbar, Typography } from '@mui/material';
 import React from 'react';
 import { Link, useHistory } from "react-router-dom";
-import useFirebase from '../hooks/useFirebase';
+import useAuth from '../hooks/useAuth';
 
 
 export default function Navigation() {
 
   //useFirebase 
-  const {user , logOut} = useFirebase()
+  const {user , logOut} = useAuth()
 
   const history = useHistory();
   const handleClick = () =>{
@@ -35,7 +35,9 @@ export default function Navigation() {
               {
                 user.email ? 
                 <>
-                  <img style={{width: '35px', height:'35px', borderRadius: '50%', marginRight: '10px'}} src={user.photoURL} alt="" />
+                  {
+                    user.photoURL && <img style={{width: '35px', height:'35px', borderRadius: '50%', marginRight: '10px'}} src={user.photoURL} alt="" />
+                  }
                   <span style={{marginRight:'10px'}}>{user.displayName}</span>
                   <Button variant='contained' color='error' onClick={logOut}>logOut</Button>
                 </>

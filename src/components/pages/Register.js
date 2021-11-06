@@ -1,10 +1,16 @@
-import { Box, Container, Grid, TextField, Typography,Button } from "@mui/material";
+import { Box, Button, Container, Grid, TextField, Typography } from "@mui/material";
 import { useState } from "react";
+import { NavLink, useHistory } from 'react-router-dom';
 import loginImg from "../../assets/images/login.png";
-import {NavLink} from 'react-router-dom'
+import useAuth from "../../hooks/useAuth";
 
 export default function Register() {
     const [registerData, setRegisterData] = useState({});
+
+    const {registerUser } = useAuth()
+
+    //Router History
+  const history = useHistory();
 
     //Collect the all Data on One Function
     const handleChange = e =>{
@@ -24,6 +30,17 @@ export default function Register() {
           return;
         }
 
+        const {email, password , name} = registerData;
+
+        // console.log(password, email)
+
+        //register
+        registerUser(email, password, name)
+        .then(user => {
+          history.push('/')
+        })
+
+
         e.preventDefault()
     }
 
@@ -36,6 +53,15 @@ export default function Register() {
               Register
             </Typography>
             <form onSubmit={handleSubmit} mt={2}>
+            <TextField
+              type='text'
+                id="standard-basic"
+                label="Full name"
+                name='name'
+                variant="standard"
+                sx={{width:'100%'}}
+                onChange={handleChange}
+              />
               <TextField
               type='email'
                 id="standard-basic"

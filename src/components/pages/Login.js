@@ -1,37 +1,42 @@
 import {
   Box,
+  Button,
   Container,
   Grid,
   TextField,
   Typography,
-  Button,
 } from "@mui/material";
 import { useState } from "react";
-import loginImg from "../../assets/images/login.png";
 import { NavLink, useHistory } from "react-router-dom";
-import useFirebase from "../../hooks/useFirebase";
+import loginImg from "../../assets/images/login.png";
+import useAuth from "../../hooks/useAuth";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { signInWithGoogle, setError } = useFirebase();
+  const { signInWithGoogle, setError, logIn } = useAuth();
 
   //Router History
   const history = useHistory();
 
+  //Google Logon
   const handleRedirect = () => {
-
     signInWithGoogle()
       .then((result) => {
-        history.push('/')
+        history.push("/");
       })
       .catch((error) => setError(error.message));
   };
 
+  //Email password login
   const handleSubmit = (e) => {
-    const loginData = { email, password };
+    logIn(email, password)
+      .then((userCredential) => {
+        console.log(userCredential.user);
+        history.push("/");
+      })
+      .catch((error) => setError(error.message));
 
-    console.log(loginData);
     e.preventDefault();
   };
 

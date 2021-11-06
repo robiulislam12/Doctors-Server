@@ -1,7 +1,7 @@
-import {getAuth, signInWithPopup , GoogleAuthProvider, onAuthStateChanged, signOut} from 'firebase/auth'
-
+import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth';
+import { useEffect, useState } from 'react';
 import "../firebase";
-import { useEffect, useState } from 'react'
+
 
 //Firebase Enable
 // initializeAuthentication()
@@ -26,6 +26,31 @@ export default function useFirebase() {
 
     }
  
+    //Email and password register
+    const registerUser = async (email, password, username) =>{
+       const newUser = await createUserWithEmailAndPassword(auth, email, password)
+        
+          //update Profile
+          await updateProfile(auth.currentUser, {
+              displayName: username
+          })
+
+          //update user state
+          const user = auth.currentUser;
+          setUser({
+              ...user,
+          })
+          
+          return newUser
+    }
+
+    //sign in with email and password
+    const logIn = (email, password) =>{
+        // console.log(email, password);
+       return signInWithEmailAndPassword(auth, email, password)
+
+    }
+    //observe user state
     useEffect(()=>{
         const unSubscribed = onAuthStateChanged(auth, user =>{
             if(user){
@@ -34,7 +59,7 @@ export default function useFirebase() {
                 setUser({})
             }
         })
-        return unSubscribed;
+        return () => unSubscribed;
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -43,7 +68,9 @@ export default function useFirebase() {
             setUser({})
         })
     }
+
+    //all things return here
     return {
-        user, error, signInWithGoogle, logOut, setError
+        user, error, signInWithGoogle, logOut, setError, registerUser, logIn
     }
 }
