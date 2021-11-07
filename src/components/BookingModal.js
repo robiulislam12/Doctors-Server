@@ -54,7 +54,7 @@ export default function BookingModal({ handleClose, open, booking ,date, setBook
       }
       
       //Send the server data
-      axios.post('http://localhost:5000/appointment', appointmentData)
+      axios.post('http://localhost:5000/appointments', appointmentData)
       .then(res => {
         if(res.data){
           setBookingSuccess(true)

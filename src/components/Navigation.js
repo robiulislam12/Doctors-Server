@@ -39,6 +39,7 @@ export default function Navigation() {
                     user.photoURL && <img style={{width: '35px', height:'35px', borderRadius: '50%', marginRight: '10px'}} src={user.photoURL} alt="" />
                   }
                   <span style={{marginRight:'10px'}}>{user.displayName}</span>
+                  <Link to='/admin'> <Button variant='contained'>Admin</Button></Link>
                   <Button variant='contained' color='error' onClick={logOut}>logOut</Button>
                 </>
                 : <Link to='/login'> <Button variant='contained' color='error'>Login</Button></Link>

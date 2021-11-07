@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Appointment from "./components/pages/Appointment";
+import DashBoard from "./components/pages/DashBoard";
 import Home from "./components/pages/Home";
 import Login from "./components/pages/Login";
 import Register from "./components/pages/Register";
@@ -13,6 +14,12 @@ export default function App() {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/home" component={Home} />
+          <PrivateRoute path="/appointment">
+            <Appointment/>
+          </PrivateRoute>
+          <PrivateRoute path="/admin">
+            <DashBoard/>
+          </PrivateRoute>
           <PrivateRoute path="/appointment">
             <Appointment/>
           </PrivateRoute>
