@@ -3,7 +3,7 @@ import React from "react";
 import BookingModal from "./BookingModal";
 
 
-export default function Booking({booking , date}) {
+export default function Booking({booking , date, setBookingSuccess}) {
 
     const [open, setOpen] = React.useState(false);
     
@@ -33,7 +33,13 @@ export default function Booking({booking , date}) {
       </Paper>
     </Grid>
 
-        <BookingModal handleClose={handleClose} open={open} booking={booking} date={date}/>
+        <BookingModal 
+        handleClose={handleClose}
+         open={open} 
+         booking={booking} 
+         date={date}
+         setBookingSuccess={setBookingSuccess}
+         />
     </>
   );
 }
