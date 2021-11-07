@@ -20,30 +20,38 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 
-async function run(){
-
-  try{
+async function run() {
+  try {
       await client.connect();
-
       const database = client.db('doctors_portal');
-      const appointmentCollection = database.collection('appointments')
+      const appointmentsCollection = database.collection('appointments');
 
-      //POST api 
-      app.post('/appointment', async (req, res) =>{
+      app.get('/appointments', async (req, res) => {
+          const email = req.query.email;
 
-        const appointmentInfo = req.body;
+          const date = new Date(req.query.date).toLocaleDateString();
 
-        const result = await appointmentCollection.insertOne(appointmentInfo);
+          const query = { patient_email: email}
 
-        res.send(result);
+          const cursor = appointmentsCollection.find(query);
+          const appointments = await cursor.toArray();
+          res.json(appointments);
 
       })
-      
+
+      app.post('/appointments', async (req, res) => {
+          const appointment = req.body;
+          const result = await appointmentsCollection.insertOne(appointment);
+          console.log(result);
+          res.json(result)
+      });
+
   }
-  finally{
-    // await client.close()
+  finally {
+      // await client.close();
   }
 }
+
 
 run().catch(console.dir);
 /*=======================================================================*/
