@@ -81,7 +81,7 @@ export default function useFirebase() {
 
     //Admin check
     useEffect(()=>{
-        fetch(`http://localhost:5000/users/${user.email}`)
+        fetch(`https://doctors-portal-12.herokuapp.com/users/${user.email}`)
         .then(res => res.json())
         .then(data => setAdmin(data.admin))
     }, [user.email])
@@ -105,7 +105,7 @@ export default function useFirebase() {
         const user = {email, displayName};
 
         //Post the user
-       fetch('http://localhost:5000/users', {
+       fetch('https://doctors-portal-12.herokuapp.com/users', {
             method: method,
             headers: {
                 'content-type': 'application/json'

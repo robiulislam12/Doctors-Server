@@ -14,7 +14,7 @@ export default function DashboardAppointments({date}) {
     const [appointments, setAppointments] = useState([])
 
     useEffect(()=>{
-      const url = `http://localhost:5000/appointments?email=${user.email}`
+      const url = `https://doctors-portal-12.herokuapp.com/appointments?email=${user.email}`
         axios(url)
         .then(res => {
             setAppointments(res.data)

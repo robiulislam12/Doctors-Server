@@ -5,7 +5,7 @@ export default function Patients() {
     const [patients, setPatients] = useState([]);
 
     useEffect(()=>{
-        axios.get('http://localhost:5000/appointments')
+        axios.get('https://doctors-portal-12.herokuapp.com/appointments')
         .then(res => {
             console.log(res.data)
         })
