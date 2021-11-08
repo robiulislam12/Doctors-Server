@@ -11,6 +11,7 @@ import Menu from '../../assets/images/menu.svg';
 import People from '../../assets/images/people.svg';
 import Settings from '../../assets/images/settings.svg';
 import useAuth from '../../hooks/useAuth';
+import AdminRoute from '../AdminRoute';
 import AddDoctor from './AddDoctor';
 import DashboardHome from './DashboardHome';
 import MakeAdmin from './MakeAdmin';
@@ -166,12 +167,12 @@ export default function DashBoard(props) {
             <Route exact path={path}>
                 <DashboardHome/>
             </Route>
-            <Route path={`${path}/makeAdmin`}>
+            <AdminRoute path={`${path}/makeAdmin`}>
                 <MakeAdmin/>
-            </Route>
-            <Route path={`${path}/addDoctor`}>
+            </AdminRoute>
+            <AdminRoute path={`${path}/addDoctor`}>
                 <AddDoctor/>
-            </Route>
+            </AdminRoute>
           </Switch>
 
        {/* Declare the react router for nesting */}

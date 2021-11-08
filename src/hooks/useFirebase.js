@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword, getAuth, getIdToken, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import "../firebase";
 
@@ -14,6 +14,7 @@ export default function useFirebase() {
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [admin, setAdmin] = useState(false);
+    const [authToken, setAuthToken] = useState('')
 
 
 
@@ -64,6 +65,11 @@ export default function useFirebase() {
         const unSubscribed = onAuthStateChanged(auth, user =>{
             if(user){
                 setUser(user)
+                getIdToken(user)
+                .then(idToken =>{
+                    setAuthToken(idToken)
+                })
+
             } else{
                 setUser({})
             }
@@ -115,6 +121,7 @@ export default function useFirebase() {
         user,
         admin,
         error,
+        authToken,
         signInWithGoogle,
         logOut, 
         setError, 
