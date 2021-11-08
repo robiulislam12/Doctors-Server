@@ -14,7 +14,7 @@ import useAuth from "../../hooks/useAuth";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { signInWithGoogle, setError, logIn , setIsLoading} = useAuth();
+  const { signInWithGoogle, setError, logIn , setIsLoading, saveUser} = useAuth();
 
   //Router History
   const history = useHistory();
@@ -27,6 +27,7 @@ export default function Login() {
     signInWithGoogle()
       .then((result) => {
         history.push(redirect_Uri);
+        saveUser(result.user.displayName, result.user.email, 'PUT')
       })
       .catch((error) => setError(error.message));
   };
@@ -39,7 +40,7 @@ export default function Login() {
         history.push("/");
       })
       .catch((error) => setError(error.message)).finally(()=>{
-        // setIsLoading(true)
+        setIsLoading(true)
       })
 
     e.preventDefault();

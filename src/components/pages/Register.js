@@ -1,4 +1,4 @@
-import { Box, Button, Container, Grid, TextField, Typography,CircularProgress } from "@mui/material";
+import { Box, Button, CircularProgress, Container, Grid, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { NavLink, useHistory } from 'react-router-dom';
 import loginImg from "../../assets/images/login.png";
@@ -7,7 +7,7 @@ import useAuth from "../../hooks/useAuth";
 export default function Register() {
     const [registerData, setRegisterData] = useState({});
 
-    const {registerUser, setIsLoading,isLoading } = useAuth()
+    const {registerUser, setIsLoading , isLoading , setError} = useAuth()
 
     //Router History
   const history = useHistory();
@@ -38,6 +38,9 @@ export default function Register() {
         registerUser(email, password, name)
         .then(user => {
           history.push('/')
+        })
+        .catch(error =>{
+          setError(error.message)
         })
         .finally(() =>{
           setIsLoading(false)

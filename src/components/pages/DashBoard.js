@@ -1,11 +1,19 @@
-import MailIcon from '@mui/icons-material/Mail';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import MenuIcon from '@mui/icons-material/Menu';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import { AppBar, Box, CssBaseline, Drawer, Grid, IconButton, List, ListItem, ListItemIcon, ListItemText, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, CssBaseline, Drawer, IconButton, List, ListItem, ListItemIcon, Toolbar, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
-import Calender from '../Calender';
-import DashboardAppointments from '../DashboardAppointments';
+import React from 'react';
+import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
+import Calender from '../../assets/images/calendar.svg';
+import File from '../../assets/images/file.svg';
+import Menu from '../../assets/images/menu.svg';
+import People from '../../assets/images/people.svg';
+import Settings from '../../assets/images/settings.svg';
+import useAuth from '../../hooks/useAuth';
+import AddDoctor from './AddDoctor';
+import DashboardHome from './DashboardHome';
+import MakeAdmin from './MakeAdmin';
 
 
 const drawerWidth = 200;
@@ -14,7 +22,13 @@ export default function DashBoard(props) {
 
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
-    const [date , setDate]= useState(new Date())
+    
+    //Nesting url and path
+    let { path, url } = useRouteMatch();
+
+    //Admin
+    const {admin} = useAuth()
+
   
     const handleDrawerToggle = () => {
       setMobileOpen(!mobileOpen);
@@ -24,14 +38,59 @@ export default function DashBoard(props) {
       <div style={{backgroundColor:'#1CC7C1', color:'white', height:'100vh'}}>
         <Toolbar />
         <List>
-          {['Dashboard', 'Appointment', 'Patients', 'Prescriptions', 'Setting'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
+          
+          <Link to={`${url}`}>
+            <ListItem button >
+              <ListItemIcon><img src={Menu} alt="" /></ListItemIcon>
+              <span style={{color:'white'}}>Dashboard</span>
             </ListItem>
-          ))}
+          </Link>
+
+          <Link to={`${url}/appointment`}>
+            <ListItem button >
+              <ListItemIcon><img src={Calender} alt="" /></ListItemIcon>
+              <span style={{color:'white'}}>Appointment</span>
+            </ListItem>
+          </Link>
+
+          <Link to={`${url}/people`}>
+            <ListItem button >
+              <ListItemIcon><img src={People} alt="" /></ListItemIcon>
+              <span style={{color:'white'}}>Patients</span>
+            </ListItem>
+          </Link>
+
+          <Link to={`${url}/prescriptions`}>
+            <ListItem button >
+              <ListItemIcon><img src={File} alt="" /></ListItemIcon>
+              <span style={{color:'white'}}>Prescriptions</span>
+            </ListItem>
+          </Link>
+
+          <Link to={`${url}/setting`}>
+            <ListItem button >
+              <ListItemIcon><img src={Settings} alt="" /></ListItemIcon>
+              <span style={{color:'white'}}>Setting</span>
+            </ListItem>
+          </Link>
+
+          {
+            admin && <>
+              <Link to={`${url}/makeAdmin`}>
+            <ListItem button >
+              <ListItemIcon><AdminPanelSettingsIcon /></ListItemIcon>
+              Make a admin
+            </ListItem>
+          </Link>
+          <Link to={`${url}/addDoctor`}>
+            <ListItem button >
+              <ListItemIcon><LocalHospitalIcon /></ListItemIcon>
+              Add a Doctor
+            </ListItem>
+          </Link>
+            </>
+          }
+          
         </List>
         
       </div>
@@ -100,17 +159,22 @@ export default function DashBoard(props) {
         sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
       >
         <Toolbar />
-        <Grid container spacing={2}>
-            <Grid item xs={12} md={6}>
-                <Calender
-                date={date}
-                setDate={setDate}/>
-            </Grid>
-            <Grid item xs={12} md={6}>
-                {/* Appointments date */}
-                <DashboardAppointments/>
-            </Grid>
-        </Grid>
+       
+       {/* Declare the react router for nesting */}
+          
+          <Switch>
+            <Route exact path={path}>
+                <DashboardHome/>
+            </Route>
+            <Route path={`${path}/makeAdmin`}>
+                <MakeAdmin/>
+            </Route>
+            <Route path={`${path}/addDoctor`}>
+                <AddDoctor/>
+            </Route>
+          </Switch>
+
+       {/* Declare the react router for nesting */}
       </Box>
     </Box>
     )

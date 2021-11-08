@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import "../firebase";
 
 
+
 //Firebase Enable
 // initializeAuthentication()
 
@@ -12,6 +13,8 @@ export default function useFirebase() {
     const [user, setUser] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(true);
+    const [admin, setAdmin] = useState(false);
+
 
 
     //Enable firebase Auth
@@ -42,6 +45,9 @@ export default function useFirebase() {
           setUser({
               ...user,
           })
+
+          //save user Call here
+          saveUser(email, username, 'POST')
           
           return newUser
     }
@@ -67,6 +73,15 @@ export default function useFirebase() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    //Admin check
+    useEffect(()=>{
+        fetch(`http://localhost:5000/users/${user.email}`)
+        .then(res => res.json())
+        .then(data => setAdmin(data.admin))
+    }, [user.email])
+
+
+    //logout the current user
     const logOut = () =>{
 
         setIsLoading(true)
@@ -79,15 +94,34 @@ export default function useFirebase() {
           })
     }
 
+    //Save user in database 
+    const saveUser = (email , displayName, method) =>{
+        const user = {email, displayName};
+
+        //Post the user
+       fetch('http://localhost:5000/users', {
+            method: method,
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(user)
+       })
+       .then()
+    }
+
+
     //all things return here
     return {
         user,
+        admin,
         error,
         signInWithGoogle,
         logOut, 
         setError, 
         registerUser, 
         logIn,
-        isLoading
+        isLoading,
+        setIsLoading,
+        saveUser
     }
 }
